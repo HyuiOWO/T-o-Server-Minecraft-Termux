@@ -1,10 +1,12 @@
-🎮 Hướng dẫn cài đặt Minecraft Paper Server trên Termux
+# 🎮 Hướng dẫn cài đặt Minecraft Paper Server trên Termux
 
 Hướng dẫn chi tiết cách thiết lập Minecraft Paper Server trên thiết bị Android sử dụng Termux.
 
-https://img.shields.io/badge/Minecraft-Server-blue https://img.shields.io/badge/PaperMC-Latest-orange https://img.shields.io/badge/Termux-supported-brightgreen
+![Minecraft](https://img.shields.io/badge/Minecraft-Server-blue)
+![PaperMC](https://img.shields.io/badge/PaperMC-Latest-orange)
+![Termux](https://img.shields.io/badge/Termux-supported-brightgreen)
 
-📋 Điều kiện tiên quyết
+## 📋 Điều kiện tiên quyết
 
 · 📱 Thiết bị Android chạy phiên bản 7.0 trở lên
 · 💾 Dung lượng trống ít nhất 2GB
