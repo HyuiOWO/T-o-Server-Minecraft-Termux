@@ -1,9 +1,8 @@
-
 🎮 Hướng dẫn cài đặt Minecraft Paper Server trên Termux
 
 Hướng dẫn chi tiết cách thiết lập Minecraft Paper Server trên thiết bị Android sử dụng Termux.
 
-https://img.shields.io/badge/Minecraft-1.20.4-green https://img.shields.io/badge/PaperMC-445-blue https://img.shields.io/badge/Termux-supported-brightgreen
+https://img.shields.io/badge/Minecraft-Server-blue https://img.shields.io/badge/PaperMC-Latest-orange https://img.shields.io/badge/Termux-supported-brightgreen
 
 📋 Điều kiện tiên quyết
 
@@ -11,25 +10,11 @@ https://img.shields.io/badge/Minecraft-1.20.4-green https://img.shields.io/badge
 · 💾 Dung lượng trống ít nhất 2GB
 · 📶 Kết nối internet ổn định
 · 🔋 Thiết bị được sạc pin (khuyến nghị)
+· ☕ Java 17 hoặc cao hơn
 
-⚡ Cài đặt nhanh
+🔧 CÀI ĐẶT THỦ CÔNG
 
-1. Cài đặt Termux
-
-Tải Termux từ:
-
-· F-Droid
-· GitHub Releases
-
-2. Chạy lệnh cài đặt tự động
-
-```bash
-curl -sL https://raw.githubusercontent.com/your-repo/minecraft-termux/main/install.sh | bash
-```
-
-🔧 Cài đặt thủ công
-
-Bước 1: Cập nhật hệ thống
+Bước 1: Cập nhật và cài đặt package
 
 ```bash
 pkg update && pkg upgrade -y
@@ -43,22 +28,44 @@ mkdir ~/minecraft-server
 cd ~/minecraft-server
 ```
 
-Bước 3: Tải PaperMC
+Bước 3: Kiểm tra phiên bản PaperMC mới nhất
 
-Phiên bản mới nhất (1.20.4):
+Truy cập trang web để xem phiên bản mới nhất:
+
+· https://papermc.io/downloads
+· Hoặc kiểm tra API: https://api.papermc.io/v2/projects/paper
+
+Ví dụ các phiên bản hiện tại (cập nhật tháng 1/2024):
+
+Minecraft 1.21+ (Mới nhất)
+
+```bash
+# Ví dụ cho 1.21.1 - KIỂM TRA LẠI SỐ BUILD TRÊN WEBSITE
+wget https://api.papermc.io/v2/projects/paper/versions/1.21.1/builds/107/downloads/paper-1.21.1-107.jar -O paper.jar
+```
+
+Minecraft 1.20.6
+
+```bash
+wget https://api.papermc.io/v2/projects/paper/versions/1.20.6/builds/165/downloads/paper-1.20.6-165.jar -O paper.jar
+```
+
+Minecraft 1.20.4
 
 ```bash
 wget https://api.papermc.io/v2/projects/paper/versions/1.20.4/builds/445/downloads/paper-1.20.4-445.jar -O paper.jar
 ```
 
-Các phiên bản khác:
+Minecraft 1.20.1
 
 ```bash
-# Phiên bản 1.19.4
-wget https://api.papermc.io/v2/projects/paper/versions/1.19.4/builds/550/downloads/paper-1.19.4-550.jar -O paper.jar
+wget https://api.papermc.io/v2/projects/paper/versions/1.20.1/builds/196/downloads/paper-1.20.1-196.jar -O paper.jar
+```
 
-# Phiên bản 1.18.2
-wget https://api.papermc.io/v2/projects/paper/versions/1.18.2/builds/388/downloads/paper-1.18.2-388.jar -O paper.jar
+Minecraft 1.19.4
+
+```bash
+wget https://api.papermc.io/v2/projects/paper/versions/1.19.4/builds/550/downloads/paper-1.19.4-550.jar -O paper.jar
 ```
 
 Bước 4: Khởi chạy server lần đầu
@@ -67,17 +74,17 @@ Bước 4: Khởi chạy server lần đầu
 java -jar paper.jar
 ```
 
-Server sẽ tự động tắt sau khi tạo file cấu hình.
+Server sẽ tự động tạo các file cấu hình và tắt sau vài giây.
 
 Bước 5: Chấp nhận EULA
 
-Chỉnh sửa file eula.txt:
+Mở file eula.txt:
 
 ```bash
 nano eula.txt
 ```
 
-Thay đổi:
+Sửa dòng:
 
 ```ini
 eula=false
@@ -89,48 +96,17 @@ thành:
 eula=true
 ```
 
-Bước 6: Tạo script khởi động
+Lưu file: Ctrl + O → Enter → Ctrl + X
 
-Tạo file start.sh:
+Bước 6: Cấu hình server cơ bản
 
-```bash
-nano start.sh
-```
-
-Nội dung script:
-
-```bash
-#!/bin/bash
-cd ~/minecraft-server
-
-# Thông số server
-JAVA_OPTS="-Xmx1G -Xms512M"
-SERVER_JAR="paper.jar"
-
-echo "🔄 Đang khởi động Minecraft Server..."
-echo "📝 Sử dụng: java $JAVA_OPTS -jar $SERVER_JAR nogui"
-
-# Khởi động server
-java $JAVA_OPTS -jar $SERVER_JAR nogui
-
-echo "❌ Server đã dừng!"
-```
-
-Cấp quyền thực thi:
-
-```bash
-chmod +x start.sh
-```
-
-⚙️ Cấu hình Server
-
-Chỉnh sửa server.properties
+Mở file server.properties:
 
 ```bash
 nano server.properties
 ```
 
-Các cài đặt quan trọng cho Termux:
+Các cài đặt quan trọng:
 
 ```properties
 server-port=25565
@@ -139,11 +115,67 @@ view-distance=6
 simulation-distance=4
 max-players=5
 motd=Termux Minecraft Server
+difficulty=normal
+level-type=default
 ```
 
-Cấu hình tối ưu hóa
+Bước 7: Tạo script khởi động
 
-Tạo file server.sh với cấu hình nâng cao:
+Tạo file start.sh:
+
+```bash
+nano start.sh
+```
+
+Thêm nội dung:
+
+```bash
+#!/bin/bash
+
+echo "=========================================="
+echo "🎮 Minecraft Paper Server Starter"
+echo "=========================================="
+
+cd ~/minecraft-server
+
+# Kiểm tra file jar
+if [ ! -f "paper.jar" ]; then
+    echo "❌ Lỗi: Không tìm thấy paper.jar"
+    echo "📍 Hãy chắc chắn bạn đã tải paper.jar vào thư mục ~/minecraft-server/"
+    exit 1
+fi
+
+# Thông tin server
+echo "📂 Thư mục: $(pwd)"
+echo "💾 Bộ nhớ: -Xmx1G -Xms512M"
+echo "🚀 Đang khởi động server..."
+
+# Khởi động server
+java -Xmx1G -Xms512M -jar paper.jar nogui
+
+echo "=========================================="
+echo "❌ Server đã dừng!"
+echo "=========================================="
+```
+
+Cấp quyền thực thi:
+
+```bash
+chmod +x start.sh
+```
+
+🚀 KHỞI ĐỘNG SERVER
+
+```bash
+cd ~/minecraft-server
+./start.sh
+```
+
+⚙️ CẤU HÌNH NÂNG CAO
+
+Tối ưu hóa cho Termux
+
+Tạo file server.sh:
 
 ```bash
 nano server.sh
@@ -153,39 +185,56 @@ nano server.sh
 #!/bin/bash
 
 # Cấu hình Java
-export JAVA_OPTS="-Xmx1G -Xms512M -XX:+UseG1GC -XX:MaxGCPauseMillis=50"
+JAVA_OPTS="-Xmx1G -Xms512M -XX:+UseG1GC -XX:MaxGCPauseMillis=50"
 
-# Cấu hình server
-cd ~/minecraft-server
+# Thư mục server
+SERVER_DIR="~/minecraft-server"
+cd $SERVER_DIR
 
-echo "🎮 Minecraft Paper Server Starting..."
-echo "💻 Memory: $JAVA_OPTS"
-echo "📂 Directory: $(pwd)"
+echo "🎯 Minecraft Paper Server - Termux Optimized"
+echo "💻 Java Options: $JAVA_OPTS"
+echo "📦 Server JAR: $(ls paper.jar)"
+echo "⏰ $(date)"
 
-# Khởi động server
+# Kiểm tra eula
+if [ ! -f "eula.txt" ] || grep -q "eula=false" "eula.txt"; then
+    echo "⚠️  Chưa chấp nhận EULA! Chỉnh sửa eula.txt thành eula=true"
+    exit 1
+fi
+
+echo "✅ Khởi động server..."
 java $JAVA_OPTS -jar paper.jar nogui
 ```
 
-🚀 Quản lý Server
+```bash
+chmod +x server.sh
+```
 
-Khởi động server
+Cấu hình bộ nhớ
+
+Tuỳ theo RAM của thiết bị:
+
+Thiết bị 4GB RAM:
 
 ```bash
-cd ~/minecraft-server
-./start.sh
+JAVA_OPTS="-Xmx2G -Xms1G"
 ```
 
-Dừng server an toàn
+Thiết bị 3GB RAM:
 
-Trong console server, gõ:
-
-```mc
-stop
+```bash
+JAVA_OPTS="-Xmx1G -Xms512M"
 ```
 
-Backup server
+Thiết bị 2GB RAM:
 
-Tạo script backup backup.sh:
+```bash
+JAVA_OPTS="-Xmx768M -Xms256M"
+```
+
+🛠️ QUẢN LÝ SERVER
+
+Tạo script backup
 
 ```bash
 nano backup.sh
@@ -197,48 +246,71 @@ BACKUP_DIR="/sdcard/minecraft-backups"
 SERVER_DIR="~/minecraft-server"
 DATE=$(date +%Y%m%d-%H%M%S)
 
-mkdir -p $BACKUP_DIR
-cd $SERVER_DIR
+echo "📦 Tạo backup server..."
 
-echo "📦 Đang tạo backup..."
-tar -czf $BACKUP_DIR/backup-$DATE.tar.gz world world_nether world_the_end
+mkdir -p $BACKUP_DIR
+
+cd $SERVER_DIR
+tar -czf $BACKUP_DIR/backup-$DATE.tar.gz \
+    world/ \
+    world_nether/ \
+    world_the_end/ \
+    server.properties \
+    ops.json \
+    whitelist.json
 
 echo "✅ Backup hoàn thành: backup-$DATE.tar.gz"
+echo "📍 Vị trí: $BACKUP_DIR/"
 ```
 
-📱 Quản lý nâng cao
+```bash
+chmod +x backup.sh
+```
 
-Chạy server ở chế độ nền
-
-Sử dụng tmux hoặc screen:
+Quản lý qua TMUX
 
 ```bash
 pkg install tmux -y
+
+# Tạo session mới
 tmux new-session -d -s minecraft 'cd ~/minecraft-server && ./start.sh'
+
+# Xem session
+tmux attach-session -t minecraft
+
+# Thoát session (giữ server chạy): Ctrl + B → D
 ```
 
-Xem log server
+📋 LỆNH QUAN TRỌNG TRONG GAME
 
-```bash
-tail -f ~/minecraft-server/logs/latest.log
+Quản trị server
+
+```mc
+/stop                    # Dừng server an toàn
+/save-all               # Lưu thế giới ngay lập tức
+/op <player>            # Cấp quyền operator
+/whitelist add <player> # Thêm vào whitelist
 ```
 
-Cài đặt plugin
+Thông tin server
 
-1. Tải plugin .jar vào thư mục plugins/
-2. Khởi động lại server
+```mc
+/list                   # Hiện player đang online
+/tps                    # Kiểm tra hiệu suất
+/gamemode creative <player>
+```
 
-🛠️ Xử lý sự cố
+❌ XỬ LÝ SỰ CỐ
 
-Lỗi thiếu bộ nhớ
+Lỗi "Out of memory"
 
 Giảm RAM trong start.sh:
 
 ```bash
-JAVA_OPTS="-Xmx512M -Xms256M"
+java -Xmx512M -Xms256M -jar paper.jar nogui
 ```
 
-Lỗi port đã được sử dụng
+Lỗi port đã sử dụng
 
 Đổi port trong server.properties:
 
@@ -246,24 +318,37 @@ Lỗi port đã được sử dụng
 server-port=25566
 ```
 
+Lỗi Java version
+
+Kiểm tra Java version:
+
+```bash
+java -version
+```
+
+Cài đặt Java 17 nếu cần:
+
+```bash
+pkg install openjdk-17 -y
+```
+
 Lỗi kết nối
 
-· Kiểm tra tường lửa
-· Đảm bảo port được mở
-· Kiểm tra IP address
+· Kiểm tra WiFi/Internet
+· Đảm bảo port không bị chặn
+· Kiểm tra IP server: ifconfig hoặc ip addr
 
-Server chạy chậm
-
-· Giảm view-distance và simulation-distance
-· Giới hạn số lượng player
-· Sử dụng plugin tối ưu hóa
-
-🔒 Bảo mật
+🔒 BẢO MẬT
 
 Bật whitelist
 
+```bash
+nano server.properties
+```
+
 ```properties
 white-list=true
+enforce-whitelist=true
 ```
 
 Thêm player vào whitelist
@@ -271,18 +356,22 @@ Thêm player vào whitelist
 Trong game:
 
 ```mc
-whitelist add <username>
+/whitelist add <username>
 ```
 
-Hoặc trong file whitelist.json
-
-Đặt password OP
+Hoặc chỉnh sửa file:
 
 ```bash
-nano ops.json
+nano whitelist.json
 ```
 
-📊 Monitoring
+📊 KIỂM TRA HIỆU SUẤT
+
+Xem log server
+
+```bash
+tail -f ~/minecraft-server/logs/latest.log
+```
 
 Kiểm tra tài nguyên
 
@@ -290,33 +379,29 @@ Kiểm tra tài nguyên
 # Kiểm tra RAM
 free -h
 
-# Kiểm tra CPU
+# Kiểm tra CPU và process
 top
 
 # Kiểm tra dung lượng
-df -h
+df -h ~/
 ```
 
-🤝 Đóng góp
+💾 CÀI ĐẶT PLUGIN
 
-Đóng góp ý kiến hoặc báo lỗi tại:
+1. Tải plugin .jar vào thư mục plugins/
+2. Tạo thư mục nếu chưa có: mkdir plugins
+3. Khởi động lại server
 
-· Issues
-· Discussions
+📝 GHI CHÚ QUAN TRỌNG
 
-📜 License
-
-MIT License - xem file LICENSE để biết thêm chi tiết.
-
-⚠️ Lưu ý quan trọng
-
-· ⚡ PIN: Server tiêu tốn nhiều pin, hãy cắm sạc khi sử dụng
-· 🔥 NHIỆT ĐỘ: Thiết bị có thể nóng lên, tránh để dưới ánh nắng
-· 💾 DUNG LƯỢNG: Thường xuyên dọn dẹp file log và backup
-· 🌐 MẠNG: Sử dụng WiFi để có kết nối ổn định
+· ⚠️ Luôn kiểm tra phiên bản mới nhất trên https://papermc.io/
+· 🔄 Backup thường xuyên trước khi cập nhật
+· 📱 Giảm view-distance nếu server lag
+· 🔋 Cắm sạc khi chạy server lâu
+· 🌡️ Theo dõi nhiệt độ thiết bị
 
 ---
 
-Chúc bạn có những giờ phút chơi Minecraft vui vẻ! 🎮✨
+🎯 Lưu ý: Các URL phiên bản có thể thay đổi. Luôn truy cập https://papermc.io/downloads để lấy link chính xác nhất!
 
-Nếu thấy hữu ích, hãy ⭐ star repository này!
+Chúc bạn tạo server thành công! 🎮✨
